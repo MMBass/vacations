@@ -29,7 +29,7 @@ or open the main file -
   ```
 
    ### user:
-   (you can also sign as a new user or-)
+   (you can also sign as a new user)
   ```
     userName: aaa
     password: 12345
