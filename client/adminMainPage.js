@@ -18,7 +18,7 @@ function moveToMainPage(userName){
       
         <div id="addingArea" class="row sticky-top position-fixed mt-5">
             <button id="chartBtn" class=" btn btn-warning ">Chart</button>
-            <button id="addBtn" class=" btn btn-primary">Add</button>
+            <button id="addBtn" class=" btn btn-success">Add</button>
         </div>
     </div>
     
@@ -45,18 +45,8 @@ function appendCards(){
             vacationsArr = JSON.parse(vacationsArr);
             dataArr = vacationsArr;
 
-            let colors=['success','primary','warning','info']
-            let color= '';
-            let counter = 0;
+            let color= 'info';
             for(let vacation of vacationsArr){
-                if(counter <= 3){
-                    color = colors[counter];
-                }else if(counter > 3){
-                    counter = 0;
-                    color = colors[counter];
-                }
-                counter++;
-
                 MAIN_DIV.innerHTML += `<div class="col-lg-4 col-sm-6 col-xs-12">
                                                   ${cards.cardAdmin(vacation,color)}
                                        </div>`
@@ -69,7 +59,8 @@ function appendCards(){
             addBtn.addEventListener("click",addV);
             chartBtn.addEventListener("click",openChart);
             const btnOut = document.querySelector('#btnOut');
-            btnOut.addEventListener('click',logOut)
+            btnOut.addEventListener('click',logOut);
+            window.sessionStorage.setItem('vacations_a','true');
         })});
 }
 
@@ -151,10 +142,14 @@ function changeBack(event,v_id){
 }
 
 function saveChanges(v_id){
-    const A = document.querySelector(`#innerParent_${v_id} h4`).textContent;
-    const B= document.querySelector(`#innerParent_${v_id} h1`).textContent;
-    const C= document.querySelector(`#innerParent_${v_id} textarea`).value;
-    const D = document.querySelector(`#innerParent_${v_id} p`).textContent;
+
+    let values = {
+        dest:document.querySelector(`#innerParent_${v_id} h3`).textContent
+        ,desc:document.querySelector(`#innerParent_${v_id} h4`).textContent
+        ,price:document.querySelector(`#innerParent_${v_id} h1`).textContent
+        ,img:document.querySelector(`#innerParent_${v_id} textarea`).value
+        ,date:document.querySelector(`#innerParent_${v_id} p`).textContent
+    }
 
     fetch(`${SERVER}vacations/?vid=${v_id}`,{
         method: "PUT",
@@ -162,12 +157,7 @@ function saveChanges(v_id){
             'Content-type':'application/json',
             'Authorization': "bearer " + window.sessionStorage.getItem('vacations_t')
         },
-        body: JSON.stringify({
-            desc:A
-            ,price:B
-            ,img:C
-            ,date:D
-            }),
+        body: JSON.stringify(values),
         })
        .then(res=>{res.text()
         .then(answer=>{
@@ -176,18 +166,18 @@ function saveChanges(v_id){
 }
 
 function addV(){
- 
     const AA = document.getElementById('addingArea');
-    AA.innerHTML = `<button id="cnBtn" class="btn btn-primary">Cancel</button>`;
+    AA.innerHTML = `<button id="cnBtn" class="btn btn-success">Cancel</button>`;
     AA.innerHTML += addVacationWindow;
 
     const sendAdd = document.querySelector('#sendAdd');
     sendAdd.addEventListener('click',(e)=>{
         e.preventDefault();
-        const A = document.getElementById('descInput').value;
-        const B= document.getElementById('priceInput').value;
-        const C= document.getElementById('imgInput').value;
-        const D = document.getElementById('dateInput').value;
+        const A = document.getElementById('destInput').value;
+        const B = document.getElementById('descInput').value;
+        const C= document.getElementById('priceInput').value;
+        const D= document.getElementById('imgInput').value;
+        const E = document.getElementById('startInput').value +" - "+ document.getElementById('endInput').value;
 
         fetch(`${SERVER}vacations`,{
             method: "POST",
@@ -196,10 +186,11 @@ function addV(){
                 'Authorization': "bearer " + window.sessionStorage.getItem('vacations_t')
             },
             body: JSON.stringify({
-                desc:A
-                ,price:B
-                ,img:C
-                ,date:D
+                 dest:A
+                ,desc:B
+                ,price:C
+                ,img:D
+                ,date:E
                 }),
             })
            .then(res=>{res.text()
@@ -211,7 +202,7 @@ function addV(){
     function done(){
         AA.innerHTML =  `
         <button id="chartBtn" class=" btn btn-warning">Chart</button>
-        <button id="addBtn" class="btn btn-primary">Add</button>`;
+        <button id="addBtn" class="btn btn-success">Add</button>`;
         const addBtn = document.querySelector('#mainDiv #addBtn');
         const chartBtn = document.querySelector('#mainDiv #chartBtn');
         addBtn.addEventListener("click",addV);
@@ -242,7 +233,7 @@ function openChart(){
         closeBtn.addEventListener('click',()=>{
             closeBtn.parentElement.innerHTML =  `
             <button id="chartBtn" class=" btn btn-warning">Chart</button>
-            <button id="addBtn" class="btn btn-primary">Add</button>`;
+            <button id="addBtn" class="btn btn-success">Add</button>`;
             const addBtn = document.querySelector('#mainDiv #addBtn');
             const chartBtn = document.querySelector('#mainDiv #chartBtn');
             addBtn.addEventListener("click",addV);

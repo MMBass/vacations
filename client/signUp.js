@@ -35,7 +35,9 @@ function signCheckExsist(e){
           if(answer == "notExistYet"){
             loginFunctions.fetchLogin(USER_NAME,PASSWORD)
           }else if(answer == "exist"){
-            alert(`${USER_NAME} alredy exist in the system , would you like to log in?`);
+            if (confirm(`${USER_NAME} alredy exist in the system , would you like to log in?`)) {
+              loginFunctions.startLogin()
+            };
           };
       })});
 }

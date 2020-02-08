@@ -12,32 +12,44 @@ function connection(){
 function read(sql,callBack){
     const con = connection();
     con.query(sql, function (err, result) {
-      if (err) throw err;
-      callBack(result);
+      if (err) {
+        callBack(err);
+        console.log(err);
+      }
+      callBack(null,result);
     });
 }
 
 function write(sql,callBack){
     const con = connection();
     con.query(sql, function (err) {
-      if (err) console.log(err);
-      else callBack(true);
+      if (err) {
+        callBack(err,false);
+        console.log(err);
+      }
+      else callBack(null,true);
     });
 }
 
 function update(sql,callBack){
   const con = connection();
   con.query(sql, function (err) {
-    if (err) console.log(err);
-    else callBack(true);
+    if (err) {
+      callBack(err);
+      console.log(err);
+    }
+    else callBack(null,true);
   });
 }
 
 function remove(sql,callBack){
   const con = connection();
   con.query(sql, function (err) {
-    if (err) throw err;
-    else callBack(true);
+    if (err) {
+      callBack(err);
+      console.log(err);
+    }
+    else callBack(null,true);
   });
 }
 

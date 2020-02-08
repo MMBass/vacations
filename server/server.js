@@ -43,7 +43,7 @@ app.get('/load',function(req,res){
 app.post('/login',function(req,res){
    let userInput = req.body;
    
-   LOGIN_BL.checkExist(userInput,(answer)=>{
+   LOGIN_BL.checkExist(userInput,(err,answer)=>{
       if(answer.userName){
          answer.token = jwt.sign(
             {
@@ -62,37 +62,37 @@ app.post('/login',function(req,res){
 
 app.post('/sign',function(req,res){
    let userInput = req.body;
-   SIGN_BL.checkExist(userInput,(answer)=>{
+   SIGN_BL.checkExist(userInput,(err,answer)=>{
       res.send(answer);
    });
 });
 
 app.get('/vacations',function(req,res){
-   VACATIONS_BL.getVacationList(req.query.uid,(answer)=>{
+   VACATIONS_BL.getVacationList(req.query.uid,(err,answer)=>{
       res.send(answer);
    });
 });
 
 app.post('/vacations',function(req,res){
-      VACATIONS_BL.addNewVacation(req.body,(answer)=>{
+      VACATIONS_BL.addNewVacation(req.body,(err,answer)=>{
          res.send(answer);
       });
 });
 
 app.put('/vacations',function(req,res){
-   VACATIONS_BL.updateVacation(req.body,req.query.vid,(answer)=>{
+   VACATIONS_BL.updateVacation(req.body,req.query.vid,(err,answer)=>{
             io.emit("update_v",answer);
    });
 });
 
 app.delete('/vacations',function(req,res){
-   VACATIONS_BL.deleteVacation(req.query.vid,(answer)=>{
+   VACATIONS_BL.deleteVacation(req.query.vid,(err,answer)=>{
       res.send(answer);
    });
 });
 
 app.put('/follow',function(req,res){
-   FOLLOW_BL.follow(req.query.vid,req.query.uid,(answer)=>{
+   FOLLOW_BL.follow(req.query.vid,req.query.uid,(err,answer)=>{
       res.send(answer);
    });
 });
