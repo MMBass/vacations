@@ -2,7 +2,7 @@ export default `
     <form id="form-add" class="col-10">
         <input type="text" id="destInput" class="form-control" placeholder="destination" required="" value="destination">
 
-        <textarea name="" id="descInput" class="form-control" placeholder="description" required="" autofocus>Description</textarea>
+        <textarea id="descInput" class="form-control" placeholder="description" required="" autofocus>Description</textarea>
 
         <input type="number" id="priceInput" class="form-control" placeholder="price" required="" value="00">
 
